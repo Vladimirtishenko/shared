@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test parser</title>
+</head>
+<body>
+    <input type="text" placeholder="Enter url">
+
+    <script>
+    
+        let input = document.querySelector("input");
+        
+        input.addEventListener("keyup", e => {
+
+            if ((e.which == 86 || e.keyCode == 86) && e.ctrlKey) {
+                let url = input.value;
+
+                let config = {
+                        method: 'POST',
+                        body: JSON.stringify({url: url}),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    };
+
+                let origin = "http://localhost:2222/data";
+
+                return fetch(origin, config)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(response) {
+                        document.body.innerHTML += JSON.stringify(response);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+
+            }
+        });
+
+    </script>
+</body>
+</html>

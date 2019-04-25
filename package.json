@@ -1,57 +1,28 @@
 {
-    "name": "shared",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "dependencies": {
-        "@babel/runtime": "^7.0.0",
-        "babel-core": "^6.26.3",
-        "babel-eslint": "^10.0.1",
-        "babel-loader": "^7.1.5",
-        "babel-plugin-transform-decorators-legacy": "^1.3.5",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.7.0",
-        "babel-preset-react": "^6.24.1",
-        "babel-preset-stage-0": "^6.24.1",
-        "bootstrap-4-stylus": "^1.0.4",
-        "bundle-loader": "^0.5.6",
-        "cheerio": "^1.0.0-rc.3",
-        "css-loader": "^1.0.0",
-        "cssnano": "^4.0.5",
-        "eslint": "^5.12.1",
-        "eslint-loader": "^2.1.1",
-        "eslint-plugin-import": "^2.16.0",
-        "express": "^4.16.4",
-        "file-loader": "^1.1.11",
-        "fs": "0.0.1-security",
-        "mini-css-extract-plugin": "^0.4.2",
-        "postcss-loader": "^2.1.6",
-        "postcss-preset-env": "^6.5.0",
-        "pug": "^2.0.3",
-        "pug-html-loader": "^1.1.5",
-        "request": "^2.88.0",
-        "style-loader": "^0.21.0",
-        "stylus": "^0.54.5",
-        "stylus-loader": "^3.0.2",
-        "terser-webpack-plugin": "^1.1.0",
-        "webpack": "^4.16.2",
-        "webpack-cli": "^3.1.0"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "clear": "rm -rf public .babelrc .gitignore .eslintrc webpack.config.js node_modules package-lock.json index.html & mv ./source/.gitignore ./source/gitignore & mv ./source/.babelrc ./source/babelrc & mv ./source/.eslintrc ./source/eslintrc",
-        "dev": "webpack --watch",
-        "prod": "NODE_ENV='production' webpack -p --process --color"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Vladimirtishenko/shared.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/Vladimirtishenko/shared/issues"
-    },
-    "homepage": "https://github.com/Vladimirtishenko/shared#readme"
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vladimirtishenko/shared.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vladimirtishenko/shared/issues"
+  },
+  "homepage": "https://github.com/Vladimirtishenko/shared#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
 }
