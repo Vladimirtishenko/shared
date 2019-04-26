@@ -1,9 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser'),
-      Request = require("request"),
-      Cheerio = require("cheerio");
+const express = require('express'),
+      bodyParser = require('body-parser'),
+      parser = require("../scripts/parser.js"),
+      app = express();
 
-const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -13,28 +14,11 @@ app.use(function(req, res, next) {
 });
 
 
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
 app.post('/data', (req, res) => {
-  let url  = req.body && req.body.url;
-  
-  Request(url, (err, response, body) => {
-
-    if (!err) {
-        
-        let $ = Cheerio.load(body),
-            title = $('title').text() || $('meta[name="twitter:title"]').attr('content') || $('meta[property="og:title"]').attr('content'),
-            description = $('meta[name="description"]').attr('content') || $('meta[name="twitter:description"]').attr('content') || $('meta[property="og:description"]').attr('content'),
-            img = $('meta[property="og:image"]').attr('content') || $('meta[name="twitter:image"]').attr('content');
-        
-        return res.json({title, description, img, url})
-        
-    } else {
-        res.status(500).send({ err });
-    }
-});
+  const url  = req.body && req.body.url,
+        data = parser(url);
+      
+  res.json(data)
   
 });
 
