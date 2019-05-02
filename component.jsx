@@ -35,9 +35,14 @@ class Component extends React.Component {
         return true;
     }
 
-    configure(component) {
-        const { form: { attachToForm } } = this.context;
+    attach(component) {
+        const { form: { attachToForm } = {} } = this.context;
         attachToForm && attachToForm(component);
+    }
+
+    detach(component) {
+        const { form: { detachFromForm } = {} } = this.context;
+        detachFromForm && detachFromForm(component);
     }
 
     validate(value, ...args) {
