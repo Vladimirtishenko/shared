@@ -23,8 +23,12 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 class EventHandling extends React.Component {
     static propTypes = {
-        warnings: oneOfType([object]).isRequired,
+        warnings: oneOfType([object]),
         actions: oneOfType([object]).isRequired
+    }
+
+    static defaultProps = {
+        warnings: null
     }
 
 	render() {
