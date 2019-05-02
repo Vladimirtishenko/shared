@@ -37,9 +37,7 @@ class EventHandling extends React.Component {
 		if (!type || !message) return null;
 
 		return (
-			<div>
-				{<Warnings type={type} message={message} actions={actions} />}
-			</div>
+			<Warnings type={type} message={message} actions={actions} />
 		);
 	}
 }
