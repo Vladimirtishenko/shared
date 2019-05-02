@@ -1,53 +1,27 @@
-'use strict';
+const _isExisty = value => value !== null && value !== undefined,
 
-let isExisty = function isExisty(value) {
-    return value !== null && value !== undefined;
-};
-
-let _isEmpty = function _isEmpty(value) {
+ _isEmpty = (value) => {
     if (value instanceof Array) {
         return value.length === 0;
     }
-    return value === '' || !isExisty(value);
-};
+    return value === '' || !_isExisty(value);
+},
 
-let _isRadioEmpty = function _isRadioEmpty(radio) {
-    return radio.some(el => el.checked) ? false : true;
-};
+ _isRadioEmpty = radio => (!radio.some(el => el.checked)),
 
-let _isCheckboxEmpty = function _isCheckboxEmpty(checkbox) {
-    return checkbox.some(el => el.checked) ? false : true;
-};
+ _isCheckboxEmpty = checkbox => (!checkbox.some(el => el.checked)),
 
-let isEmptyTrimed = function isEmptyTrimed(value) {
+ _isEmptyTrimed = (value) => {
     if (typeof value === 'string') {
         return value.trim() === '';
     }
     return true;
-};
+},
 
-let validations = {
+ validations = {
     matchRegexp: function matchRegexp(value, regexp) {
-        let validationRegexp = regexp instanceof RegExp ? regexp : new RegExp(regexp);
+        const validationRegexp = regexp instanceof RegExp ? regexp : new RegExp(regexp);
         return _isEmpty(value) || validationRegexp.test(value);
-    },
-
-    isPasswordMatchRegexp: function isPasswordMatchRegexp(value, regexp) {
-        const validationRegexp = regexp instanceof RegExp ? regexp : new RegExp(regexp),
-              val = value.isJson() ? JSON.parse(value) : null;
-
-        if(!val) return;
-
-        const values = _.values(val);
-
-        _.forEach(values, (item) => {
-            if(!validationRegexp.test(item)){
-                return false
-            }
-        })
-
-        return true;
-
     },
 
     isEmail: function isEmail(value) {
@@ -58,42 +32,8 @@ let validations = {
         return validations.matchRegexp(value, /^(?:(?:(?:0?[1-9]|1\d|2[0-8])\/(?:0?[1-9]|1[0-2]))\/(?:(?:1[6-9]|[2-9]\d)\d{2}))$|^(?:(?:(?:31\/0?[13578]|1[02])|(?:(?:29|30)\/(?:0?[1,3-9]|1[0-2])))\/(?:(?:1[6-9]|[2-9]\d)\d{2}))$|^(?:29\/0?2\/(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26]))))$/i);
     },
 
-    isDateRange: function isDateRange(value) {
-
-        if(!value) return false;
-
-        const [start, end] = value.split('-');
-
-        const from = /^\d{1,2}\/\d{4}$/.test(start),
-              to = /^\d{1,2}\/\d{4}$/.test(end);
-
-        if(from && to) {
-            return true;
-        }
-
-        return false;
-
-    },
-    isTelegram: function isTelegram(value) {
-        return validations.matchRegexp(value, /^@[A-Za-z0-9_-]{3,}/) || validations.matchRegexp(value, /^\+?3?8?(0\d{9})$/i) ;
-    },
     isUrl: function isUrl(value) {
         return validations.matchRegexp(value, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/);
-    },
-
-    isPasswordComparing: function isPasswordComparing(value) {
-        const val = value.isJson() ? JSON.parse(value) : null;
-
-        if(!val) return;
-
-        const values = _.values(val);
-
-        if( values[0] === values[1] ) {
-            return true;
-        }
-
-        return false;
-
     },
 
     isEmpty: function isEmpty(value) {
@@ -113,11 +53,9 @@ let validations = {
     },
 
     trim: function trim(value) {
-        return !isEmptyTrimed(value);
+        return !_isEmptyTrimed(value);
     },
-    isName: function isName(value){
-        return validations.matchRegexp(value, /^[a-zA-Zа-яА-ЯёЁ'][a-zA-Z-а-яА-ЯёЁ' ]+[a-zA-Zа-яА-ЯёЁ']?$/);
-    },
+
     isNumber: function isNumber(value) {
         return validations.matchRegexp(value, /^-?[0-9]\d*(\d+)?$/i);
     },
@@ -127,7 +65,7 @@ let validations = {
     },
 
     isPositive: function isPositive(value) {
-        if (isExisty(value)) {
+        if (_isExisty(value)) {
             return (validations.isNumber(value) || validations.isFloat(value)) && value >= 0;
         }
         return true;

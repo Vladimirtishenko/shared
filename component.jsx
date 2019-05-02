@@ -1,40 +1,29 @@
-import React from 'react'
-import { object } from 'prop-types'
+import React from 'react';
+import { oneOfType, object } from 'prop-types';
 
-const _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+const _typeof = (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') ?
+                function a(obj) { return typeof obj; } :
+                function b(obj) {
+                    return (obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype) ?
+                        'symbol' :
+                        typeof obj;
+                };
 
 class Component extends React.Component {
-
-    constructor(props, context){
+    constructor(props, context) {
         super(props, context);
-
-        this.state = {...this.props};
+        this.state = { ...this.props };
 
         this.invalid = [];
     }
 
-    configure(component){
-        const { form: { attachToForm } = {} } = this.context;
-
-         attachToForm && attachToForm(component);
-    }
-
-    attach(component){
-        const { form: { attachToForm } = {} } = this.context;
-
-         attachToForm && attachToForm(component);
-    }
-
-    detach(component){
-        const { form: { detachFromForm } = {} } = this.context;
-
-         detachFromForm && detachFromForm(component);
+    shouldComponentUpdate(nextState) {
+        return this.state !== nextState;
     }
 
     getErrorMessage() {
-        var errorMessages = this.state.errorMessages;
-
-        var type = typeof errorMessages === 'undefined' ? 'undefined' : _typeof(errorMessages);
+        const { errorMessages } = this.state,
+                type = typeof errorMessages === 'undefined' ? 'undefined' : _typeof(errorMessages);
 
         if (type === 'string') {
             return errorMessages;
@@ -46,19 +35,26 @@ class Component extends React.Component {
         return true;
     }
 
-    validate(value) {
+    configure(component) {
+        const { form: { attachToForm } } = this.context;
+        attachToForm && attachToForm(component);
+    }
 
-        let includeRequired = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false,
-            dryRun = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    validate(value, ...args) {
+        const includeRequired = args.length >= 1 && args[0] !== undefined ? args[0] : false,
+              dryRun = args.length === 2 && args[1] !== undefined ? args[1] : false;
 
         this.invalid = [];
 
-        let result = [],
-            valid = true;
+        const result = [],
+              { validators } = this.state,
+              { form: { getValidator } } = this.context;
 
-        this.state.validators.map((validator, i) => {
-            let obj = {};
-            obj[i] = this.context.form.getValidator(validator, value, includeRequired);
+        let valid = true;
+
+        validators.map((validator, i) => {
+            const obj = {};
+            obj[i] = getValidator(validator, value, includeRequired);
             return result.push(obj);
         });
 
@@ -74,13 +70,15 @@ class Component extends React.Component {
 
         if (!dryRun) {
             this.setState({ isValid: valid }, () => {
-                this.props.validatorListener(this.state.isValid);
+                const { validatorListener, isValid } = this.state;
+                validatorListener(isValid);
             });
         }
     }
 
-    isVali() {
-        return this.state.isValid;
+    isValid() {
+        const { isValid } = this.state;
+        return isValid;
     }
 
     makeInvalid() {
@@ -90,15 +88,10 @@ class Component extends React.Component {
     makeValid() {
         this.setState({ isValid: true });
     }
-
-    shouldComponentUpdate(nextState){
-        return this.state !== nextState;
-    }
-
 }
 
 Component.contextTypes = {
-    form: object
+    form: oneOfType([object])
 };
 
 export default Component;

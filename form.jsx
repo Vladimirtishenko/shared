@@ -1,24 +1,55 @@
-import React from 'react'
-import { object, func, bool, node, number } from 'prop-types'
+import React from 'react';
+import {
+ object, func, node, oneOfType
+} from 'prop-types';
 
 import ValidationRules from './rules.js';
 
 class Form extends React.Component {
-
     static propTypes = {
         onSubmit: func.isRequired,
-        instantValidate: bool,
-        children: node,
-        onError: func,
-        debounceTime: number
+        children: node.isRequired,
+        onError: func
     }
 
-    constructor(props, context){
-        super(props, context)
+    static defaultProps = {
+        onError: () => {}
+    }
+
+    static find(collection, fn) {
+        for (let i = 0, l = collection.length; i < l; i++) {
+            const item = collection[i];
+            if (fn(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    static getValidator(validator, value, includeRequired) {
+        let result = true,
+            name = validator;
+
+        if (name !== 'required' || includeRequired) {
+            let extra;
+            const splitIdx = validator.indexOf(':');
+
+            if (splitIdx !== -1) {
+                name = validator.substring(0, splitIdx);
+                extra = validator.substring(splitIdx + 1);
+            }
+
+            result = ValidationRules[name](value, extra);
+        }
+
+        return result;
+    }
+
+    constructor(props, context) {
+        super(props, context);
 
         this.childs = [];
         this.errors = [];
-
     }
 
     getChildContext() {
@@ -31,32 +62,65 @@ class Form extends React.Component {
         };
     }
 
-    attachToForm(component) {
+    validate(input, includeRequired) {
+        const { props } = input,
+            { state } = input,
+            { id } = state,
+            { value } = state,
+            { validators } = props,
+            result = [],
+            component = Form.find(this.childs, (c) => {
+                return c.state.id === id;
+            });
 
+        let valid = true,
+            validateResult = false;
+
+        validators.map((validator) => {
+            validateResult = Form.getValidator(validator, value, includeRequired);
+            result.push({ input, result: validateResult });
+
+            component.validate(component.state.value, true);
+            return validator;
+        });
+
+        result.map((item) => {
+            if (!item.result) {
+                valid = false;
+                this.errors.push(item.input);
+            }
+            return item;
+        });
+
+        return valid;
+    }
+
+    attachToForm(component) {
         if (this.childs.indexOf(component) === -1) {
             this.childs.push(component);
         }
     }
 
     detachFromForm(component) {
-        let componentPos = this.childs.indexOf(component);
+        const componentPos = this.childs.indexOf(component);
         if (componentPos !== -1) {
-            this.childs = this.childs.slice(0, componentPos).concat(this.childs.slice(componentPos + 1));
+            this.childs = this.childs.slice(0, componentPos)
+                                     .concat(this.childs.slice(componentPos + 1));
         }
     }
 
-    submit(event){
-
+    submit(event) {
         if (event) {
             event.preventDefault();
         }
-        let result = this.walk(this.childs);
+        const result = this.walk(this.childs),
+            { onError, onSubmit } = this.props;
 
         if (this.errors.length) {
-            this.props.onError && this.props.onError(this.errors);
+            onError && onError(this.errors);
         }
         if (result) {
-            this.props.onSubmit(event);
+            onSubmit(event);
         }
         return result;
     }
@@ -74,22 +138,13 @@ class Form extends React.Component {
         } else {
             result = this.walk([children]);
         }
+
         return result;
     }
 
-    find(collection, fn) {
-        for (let i = 0, l = collection.length; i < l; i++) {
-            let item = collection[i];
-            if (fn(item)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
     checkInput(input) {
-        let result = true,
-            validators = input.props.validators;
+        let result = true;
+        const { validators } = input.props;
 
         if (validators && !this.validate(input, true)) {
             result = false;
@@ -98,68 +153,18 @@ class Form extends React.Component {
         return result;
     }
 
-    validate(input, includeRequired) {
-
-        let props = input.props,
-            state = input.state,
-            id = state.id,
-            value = state.value,
-            validators = props.validators,
-            name = props.name,
-            result = [],
-            valid = true,
-            validateResult = false,
-            component = this.find(this.childs, (component) => {
-                return component.state.id === id;
-            });
-
-        validators.map((validator) => {
-            validateResult = this.getValidator(validator, value, includeRequired);
-            result.push({ input: input, result: validateResult });
-
-            component.validate(component.state.value, true);
-            return validator;
-        });
-
-        result.map((item) => {
-            if (!item.result) {
-                valid = false;
-                this.errors.push(item.input);
-            }
-            return item;
-        });
-
-        return valid;
-    }
-
-    getValidator(validator, value, includeRequired) {
-
-        let result = true,
-            name = validator;
-
-        if (name !== 'required' || includeRequired) {
-            let extra = void 0,
-                splitIdx = validator.indexOf(':');
-
-            if (splitIdx !== -1) {
-                name = validator.substring(0, splitIdx);
-                extra = validator.substring(splitIdx + 1);
-            }
-            result = ValidationRules[name](value, extra);
-        }
-        return result;
-    };
-
-    render(){
-
-        return (<form onSubmit={::this.submit}>
-                    {this.props.children}
-               </form>)
+    render() {
+        const { children } = this.props;
+        return (
+            <form onSubmit={::this.submit}>
+                {children}
+            </form>
+        );
     }
 }
 
 Form.childContextTypes = {
-    form: object
+    form: oneOfType([object])
 };
 
 export default Form;
