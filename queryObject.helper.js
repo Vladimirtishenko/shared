@@ -1,38 +1,33 @@
-const parse = (str = '') => {
-  str = str.replace(/^\?/, '')
-  let result = {}
+export const parse = (str = '') => {
+  str = str.replace(/^\?/, '');
+  const result = {};
 
   if (!str) {
-    return result
+    return result;
   }
 
-  const arr = str.split('&')
-  const length = arr.length
+  const arr = str.split('&'),
+        { length } = arr;
 
   for (let i = 0; i < length; i++) {
-    let [ key, value ] = arr[i].replace(/%20|\+/g, ' ').split('=')
+    const [key, value] = arr[i].replace(/%20|\+/g, ' ').split('=');
 
-    result[decodeURIComponent(key)] = value ? decodeURIComponent(value) : null
+    result[decodeURIComponent(key)] = value ? decodeURIComponent(value) : null;
   }
 
-  return result
-}
+  return result;
+};
 
-const stringify = (obj = {}) => {
-  let result = ''
+export const stringify = (obj = {}) => {
+  let result = '';
 
-  for (let prop in obj) {
-    result += encodeURIComponent(prop)
-    if (obj.hasOwnProperty(prop) && obj[prop]) {
-      result += '=' + encodeURIComponent(obj[prop])
+  for (const keys in obj) {
+    result += encodeURIComponent(keys);
+    if (Object.prototype.hasOwnProperty.call(obj, keys) && obj[keys]) {
+        result += `=${encodeURIComponent(obj[keys])}`;
     }
-    result += '&'
+    result += '&';
   }
 
-  return result.slice(0, -1)
-}
-
-export default {
-  parse,
-  stringify
-}
+  return result.slice(0, -1);
+};
