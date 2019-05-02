@@ -23,24 +23,22 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 class EventHandling extends React.Component {
     static propTypes = {
-        element: oneOfType([object]).isRequired,
         warnings: oneOfType([object]).isRequired,
         actions: oneOfType([object]).isRequired
     }
 
 	render() {
-		const { element, warnings, actions } = this.props;
+		const { warnings, actions } = this.props;
 
         if (!warnings) return null;
 
-		const { type, message } = warnings,
-            Component = element || Warnings;
+		const { type, message } = warnings;
 
 		if (!type || !message) return null;
 
 		return (
 			<div>
-				{<Component type={type} message={message} actions={actions} />}
+				{<Warnings type={type} message={message} actions={actions} />}
 			</div>
 		);
 	}

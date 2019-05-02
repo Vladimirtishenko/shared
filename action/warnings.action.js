@@ -1,10 +1,10 @@
-import * as types from '../constant/warnings.const.js';
+import { SET_WARNINGS } from '../constant/warnings.const.js';
 
 export const warningSetter = (error) => {
     return (dispatch) => {
         dispatch({
-            type: types.SET_WARNINGS,
-            notification: { ...error }
+            type: SET_WARNINGS,
+            warnings: { ...error }
         });
     };
 };

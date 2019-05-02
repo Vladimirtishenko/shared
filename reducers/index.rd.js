@@ -1,7 +1,7 @@
 import * as types from '../constant/warnings.const.js';
 
 const initialState = {
-    notification: null
+    warnings: null
 };
 
 export default function category(state = initialState, action) {
@@ -9,16 +9,16 @@ export default function category(state = initialState, action) {
         case types.SET_WARNINGS:
             return {
                 ...state,
-                notification: action.notification
+                warnings: action.warnings
             };
 
         default:
-            const notification = _.indexOf(_.keys(action), 'notification');
+            const warnings = _.indexOf(_.keys(action), 'warnings');
 
-            if (notification !== -1) {
+            if (warnings !== -1) {
                 return {
                     ...state,
-                    notification: action.notification
+                    warnings: action.warnings
                 };
             }
             return state;
