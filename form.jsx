@@ -57,7 +57,7 @@ class Form extends React.Component {
             form: {
                 attachToForm: ::this.attachToForm,
                 detachFromForm: ::this.detachFromForm,
-                getValidator: ::this.getValidator
+                getValidator: Form.getValidator
             }
         };
     }
