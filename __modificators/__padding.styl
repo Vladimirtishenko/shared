@@ -1,150 +1,87 @@
-// Top Padding
-
-.padding--t-0
-	padding-top 0
-	
-.padding--t-5
-	padding-top 0.3125rem
-
-.padding--t-10
-	padding-top 0.625rem
-	
-.padding--t-15
-	padding-top 0.9375rem
-	
-.padding--t-20
-	padding-top 1.25rem
-	
-.padding--t-25
-	padding-top 1.5625rem
-	
-.padding--t-30
-	padding-top 1.875rem
-	
-.padding--t-35
-	padding-top 2.1875rem
-	
-.padding--t-40
-	padding-top 2.5rem
-	
-.padding--t-45
-	padding-top 2.8125rem
-	
-.padding--t-50
-	padding-top 3.125rem
-	
-.padding--t-55
-	padding-top 3.4375rem
-	
-.padding--t-60
-	padding-top 3.75rem
-	
-.padding--t-65
-	padding-top 4.0625rem
-	
-.padding--t-70
-	padding-top 4.375rem
-	
-.padding--t-75
-	padding-top 4.6875rem
-	
-// Bottom Padding
-
-.padding--b-0
-	padding-bottom 0
-	
-.padding--b-5
-	padding-bottom 0.3125rem
-
-.padding--b-10
-	padding-bottom 0.625rem
-	
-.padding--b-15
-	padding-bottom 0.9375rem
-	
-.padding--b-20
-	padding-bottom 1.25rem
-	
-.padding--b-25
-	padding-bottom 1.5625rem
-	
-.padding--b-30
-	padding-bottom 1.875rem
-	
-.padding--b-35
-	padding-bottom 2.1875rem
-	
-.padding--b-40
-	padding-bottom 2.5rem
-	
-.padding--b-45
-	padding-bottom 2.8125rem
-	
-.padding--b-50
-	padding-bottom 3.125rem
-	
-.padding--b-55
-	padding-bottom 3.4375rem
-	
-.padding--b-60
-	padding-bottom 3.75rem
-	
-.padding--b-65
-	padding-bottom 4.0625rem
-	
-.padding--b-70
-	padding-bottom 4.375rem
-
-.padding--b-75
-	padding-bottom 4.6875rem
-
-
-// Padding centered
-	
-.padding--0
-	padding 0
-	
-.padding--c-5
-	padding 0 0.3125rem
-
-.padding--c-10
-	padding 0 0.625rem
-	
-.padding--c-15
-	padding 0 0.9375rem
-	
-.padding--c-20
-	padding 0 1.25rem
-	
-.padding--c-25
-	padding 0 1.5625rem
-	
-.padding--c-30
-	padding 0 1.875rem
-	
-.padding--c-35
-	padding 0 2.1875rem
-	
-.padding--c-40
-	padding 0 2.5rem
-	
-.padding--c-45
-	padding 0 2.8125rem
-	
-.padding--c-50
-	padding 0 3.125rem
-	
-.padding--c-55
-	padding 0 3.4375rem
-	
-.padding--c-60
-	padding 0 3.75rem
-	
-.padding--c-65
-	padding 0 4.0625rem
-	
-.padding--c-70
-	padding 0 4.375rem
-	
-.padding--c-75
-	padding 0 4.6875rem
+for i in [0...200]
+	if i % 2  == 0
+		.padding--{i}
+			padding i + 0px
+			@media (max-width: 1200px)
+				.padding--xl-{i}
+					padding i + 0px
+			@media (max-width: 992px)
+				.padding--lg-{i}
+					padding i + 0px
+			@media (max-width: 768px)
+				.padding--md-{i}
+					padding i + 0px
+			@media (max-width: 576px)
+				.padding--sm-{i}
+					padding i + 0px
+			@media (max-width: 460px)
+				.padding--xs-{i}
+					padding i + 0px
+		.padding--l-{i}
+			padding-left i + 0px
+			@media (max-width: 1200px)
+				.padding--xl-l-{i}
+					padding-left i + 0px
+			@media (max-width: 992px)
+				.padding--lg-l-{i}
+					padding-left i + 0px
+			@media (max-width: 768px)
+				.padding--md-l-{i}
+					padding-left i + 0px
+			@media (max-width: 576px)
+				.padding--sm-l-{i}
+					padding-left i + 0px
+			@media (max-width: 460px)
+				.padding--xs-l-{i}
+					padding-left i + 0px
+		.padding--r-{i}
+			padding-right i + 0px
+			@media (max-width: 1200px)
+				.padding--xl-r-{i}
+					padding-right i + 0px
+			@media (max-width: 992px)
+				.padding--lg-r-{i}
+					padding-right i + 0px
+			@media (max-width: 768px)
+				.padding--md-r-{i}
+					padding-right i + 0px
+			@media (max-width: 576px)
+				.padding--sm-r-{i}
+					padding-right i + 0px
+			@media (max-width: 460px)
+				.padding--xs-r-{i}
+					padding-right i + 0px
+		.padding--t-{i}
+			padding-top i + 0px
+			@media (max-width: 1200px)
+				.padding--xl-t-{i}
+					padding-top i + 0px
+			@media (max-width: 992px)
+				.padding--lg-t-{i}
+					padding-top i + 0px
+			@media (max-width: 768px)
+				.padding--md-t-{i}
+					padding-top i + 0px
+			@media (max-width: 576px)
+				.padding--sm-t-{i}
+					padding-top i + 0px
+			@media (max-width: 460px)
+				.padding--xs-t-{i}
+					padding-top i + 0px
+		.padding--b-{i}
+			padding-bottom i + 0px
+			@media (max-width: 1200px)
+				.padding--xl-b-{i}
+					padding-bottom i + 0px
+			@media (max-width: 992px)
+				.padding--lg-b-{i}
+					padding-bottom i + 0px
+			@media (max-width: 768px)
+				.padding--md-b-{i}
+					padding-bottom i + 0px
+			@media (max-width: 576px)
+				.padding--sm-b-{i}
+					padding-bottom i + 0px
+			@media (max-width: 460px)
+				.padding--xs-b-{i}
+					padding-bottom i + 0px
